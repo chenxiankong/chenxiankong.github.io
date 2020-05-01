@@ -178,9 +178,8 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-05-01 15:33:56 / 修改时间：15:33:07" itemprop="dateCreated datePublished" datetime="2020-05-01T15:33:56+08:00">2020-05-01</time>
+              <time title="创建时间：2020-05-01 21:38:47" itemprop="dateCreated datePublished" datetime="2020-05-01T21:38:47+08:00">2020-05-01</time>
             </span>
 
           
@@ -300,7 +299,315 @@
 </ul>
 </li>
 </ul>
-<h2 id="分支主题-4"><a href="#分支主题-4" class="headerlink" title="分支主题 4"></a>分支主题 4</h2><h2 id="分支主题-2"><a href="#分支主题-2" class="headerlink" title="分支主题 2"></a>分支主题 2</h2><h2 id="分支主题-3"><a href="#分支主题-3" class="headerlink" title="分支主题 3"></a>分支主题 3</h2>
+<h2 id="3-信令网"><a href="#3-信令网" class="headerlink" title="3.信令网"></a>3.信令网</h2><h3 id="信令网的组成"><a href="#信令网的组成" class="headerlink" title="信令网的组成"></a>信令网的组成</h3><ul>
+<li><p>信令点（SP）</p>
+<ul>
+<li>信令消息的起源点和目的点，它可以是具有No.7信令功能的各种交换局（如电话交换局、数据交换局、ISDN交换局），也可以是各种特服中心（如网管中心、维护中心、业务交换点等）。</li>
+<li>信令点是由No.7信令系统中的MTP和UP组成，若它具有业务交换点功能，则包括No.7信令系统中MTP、SCCP和TC</li>
+</ul>
+</li>
+<li><p>信令转接点（STP）</p>
+<ul>
+<li><p>具有信令转接功能</p>
+</li>
+<li><p>分为</p>
+<ul>
+<li><p>独立的信令转接点：</p>
+<ul>
+<li>高度可靠的分组交换机，容量大，易于维护。</li>
+<li>具有No.7信令系统中的MTP功能</li>
+</ul>
+</li>
+<li><p>综合的信令转接点</p>
+<ul>
+<li>具有No.7信令系统中的MTP和UP功能</li>
+<li>容量较小，与独立的STP相比可靠性不高。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>信令链</p>
+<ul>
+<li>信令网中连接信令点的最基本部件，</li>
+<li>它由No.7信令功能的一、二级组成。数字信令链速率为64kbit/s</li>
+</ul>
+</li>
+</ul>
+<h3 id="按结构分为"><a href="#按结构分为" class="headerlink" title="按结构分为"></a>按结构分为</h3><ul>
+<li><p>无级信令网：</p>
+<ul>
+<li>信令网中不引入信令转接点，信令点间采用直联工作方式。这种方式在容量和经济上都满足不了国际国内信令网的要求，故未广泛采用。</li>
+</ul>
+</li>
+<li><p>分级信令网：</p>
+<ul>
+<li><p>含有信令转接点的信令网，它可按等级分为二级、三级网。大多数国家采用二级网，当二级网不能满足要求时，应采用三级网</p>
+</li>
+<li><p>我国的信令网结构</p>
+<ul>
+<li><p>采用三级结构：</p>
+<ul>
+<li>第一级为高级信令转接点HSTP，负责转接它汇接的第二级LSTP和第三级SP的信令消息。HSTP是采用独立型信令转接点设备</li>
+<li>第二级为低级信令转接点LSTP,负责转接它所汇接的第三级SP的信令消息。LSTP可以采用独立型信令转接设备；也可以采用与交换局合设在一起的综合式信令转接点设备</li>
+<li>第三级为信令点SP，它是信令网传递各种信令消息的源点或宿点，由各种交换局和特种服务中心，如业务控制点SCP、网管中心NMC等组成</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="信令网路由选择"><a href="#信令网路由选择" class="headerlink" title="信令网路由选择"></a>信令网路由选择</h3><ul>
+<li>首先选择正常路由，当正常路由<br>故障变为不能用时，再选择迂回<br>路由；</li>
+<li>具有多个迂回路由时，按照优先<br>级的先后顺序选择迂回路由。</li>
+<li>负荷分担的一个路由中一个信令<br>链路故障，将它承担的信令业务<br>倒换到采用负荷分担方式的其它<br>信令链路。</li>
+<li>若有多个同一优先等级的多个路<br>由(N)，它们之间采用负荷分担方<br>式，每个路由承担整个信令负荷<br>的1／N．</li>
+</ul>
+<h2 id="2-No-7信令系统的功能结构"><a href="#2-No-7信令系统的功能结构" class="headerlink" title="2.No.7信令系统的功能结构"></a>2.No.7信令系统的功能结构</h2><h3 id="基本功能结构"><a href="#基本功能结构" class="headerlink" title="基本功能结构"></a>基本功能结构</h3><ul>
+<li>公共的消息传递部分（MTP Message Transfer<br>Part）。它为正在通信的用户功能之间提供信号消息的可靠传递</li>
+<li>适合不同用户的独立用户部分（UP User Part）。它是使用消息传递部分传送能力的功能实体</li>
+</ul>
+<h3 id="OSI：Open-System-Interconnection"><a href="#OSI：Open-System-Interconnection" class="headerlink" title="OSI：Open System Interconnection"></a>OSI：Open System Interconnection</h3><ul>
+<li>物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。</li>
+</ul>
+<h3 id="分层"><a href="#分层" class="headerlink" title="分层"></a>分层</h3><ul>
+<li>MTP：消息传递部分<br>TUP：电话用户部分<br>ISUP：ISDN用户部分<br>SCCP：信令连接控制部分<br>TCAP：事务处理能力应用部分<br>INAP：智能网应用部分<br>MAP：移动通信应用部分<br>OMAP：操作维护应用部分</li>
+<li></li>
+</ul>
+<h3 id="MTP消息传输层"><a href="#MTP消息传输层" class="headerlink" title="MTP消息传输层"></a>MTP消息传输层</h3><ul>
+<li><p>3级结构</p>
+<ul>
+<li><p>第1级为信令数据链路级</p>
+<ul>
+<li>对应于OSI模型的物理层</li>
+<li>它规定了信令链路的物理电气特性及接入方法．在采用数字传输通道时，在每个方向的传输速率为64kbit／s或 2Mbit/s。</li>
+</ul>
+</li>
+<li><p>第2级为信令链路功能级。</p>
+<ul>
+<li>该级对应于OSI模型的数据链路层。</li>
+<li>基本功能是将第一级中透明传输的比特流划分为不同长度的信令单元(signal unit)，并通过差错检测及重发校正保证信令单元的正确传输。</li>
+</ul>
+</li>
+<li><p>第3级是信令网功能级。</p>
+<ul>
+<li>该级对应于OSI模型中网络层的部分功<br>能。</li>
+<li>分为信令消息处理和信令网管理两部分。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>局限性及增强</p>
+<ul>
+<li><p>局限性</p>
+<ul>
+<li>No.7信令系统在开始发展时，主要是考虑在数字电话网中传送各种与电路有关的控制信息，用户部分主要是电话用户部分TUP，所以MTP能满足消息传送的要求。</li>
+<li>随着综合业务数字网ISDN和智能网的发展，不仅需要传送与电路接续有关的消息，而且需要传送与电路无关的端到端的信息，原来的MTP已不能满足要求。</li>
+</ul>
+</li>
+<li><p>增强</p>
+<ul>
+<li>在不修改MTP的前提下，通过增加信令连接控制部分（SCCP：Signaling Connection Control Part)来增强MTP的功能</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="UP用户部分"><a href="#UP用户部分" class="headerlink" title="UP用户部分"></a>UP用户部分</h3><ul>
+<li><p>1）电话用户部分（TUP)</p>
+<ul>
+<li><p>TUP是No．7信令方式的第四功能级中最先得到应用的用户部分。</p>
+</li>
+<li><p>TUP主要规定了</p>
+<ul>
+<li>有关电话呼叫的建立和释放的信令程序及实现这些程序的消息和消息编码</li>
+<li>并能支持部分用户补充业务。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>2）信令连接控制部分（SCCP)</p>
+<ul>
+<li><p>为了满足新的用户部分(例智能网应用和移动通信应用)对消息传递的进一步要求，CCITT补充了SCCP来弥补MTP在网络层功能的不足。</p>
+</li>
+<li><p>SCCP提供了较强的路由和寻址功能，叠加在MTP上．与MTP中的第三级一起共同完成OSI中网络层的功能，至于那些满足于MTP服务的用户部分(例如TUP)．则可以不经SCCP直与MTP第三级连接。</p>
+</li>
+</ul>
+</li>
+<li><p>3）事务处理能力应用部分（TCAP)</p>
+<ul>
+<li>是指通信网中分散的一系列应用在相互通<br>信时采用的一组规约和功能。这是目前通信网提供智能网业务和支持移动通信网中与移动台移动有关的业务的基础。</li>
+</ul>
+</li>
+<li><p>4) 综合业务数字网用户部分(ISUP)</p>
+<ul>
+<li>ISDN用户部分是在TUP的基础上扩展而成的。ISUP提供综合业务数字网中信令功能，以支持基本的承载业务和附加的承载业务。</li>
+<li>当ISUP传送与电路相关的信息时，只需得到MTP的支持，而在传送端到端的信令消息时，可依靠SCCP来支持，这种传送可以采用面向连接的协议，也可以采用无连接协议。</li>
+</ul>
+</li>
+<li><p>5) 数据用户部分（DUP)</p>
+<ul>
+<li>是用来传送来用电路交换方式的数据通信网的<br>信令信息</li>
+<li>由于我国的数据通信采用的是分组交换方式，故<br>在我国不会应用DUP</li>
+</ul>
+</li>
+</ul>
+<h3 id="No-7号信令系统的四级功能结构"><a href="#No-7号信令系统的四级功能结构" class="headerlink" title="No.7号信令系统的四级功能结构"></a>No.7号信令系统的四级功能结构</h3><ul>
+<li></li>
+<li><p>信令数据链路功能级 MTP1</p>
+<ul>
+<li><p>用于传送信令业务的二进制比特流</p>
+</li>
+<li><p>传输速率</p>
+<ul>
+<li>在数字的信令链路中，采用64kb/s、2Mb/s的速率</li>
+<li>在模拟的信令链路中，采用4.8kb/s的速率</li>
+</ul>
+</li>
+<li><p>以全双工的方式工作</p>
+</li>
+<li><p>占用时隙</p>
+<ul>
+<li>在数字环境下，信令数据链路采用64kbit／s的数字通路，通常对应于PCM传输系统中的一个时隙</li>
+</ul>
+</li>
+<li><p>数字型信令数据链路连接方法</p>
+<ul>
+<li><p>半永久性连接</p>
+<ul>
+<li>子主题 1</li>
+</ul>
+</li>
+<li><p>时隙插入方式</p>
+<ul>
+<li>子主题 1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>信令经由通路</p>
+<ul>
+<li>子主题 1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>信令链路功能模块结构 MTP2</p>
+<ul>
+<li><p>与信令数据链路功能级配合，共同保证在直联的两个信令点之间，提供可靠的传送信令消息的信令链路</p>
+</li>
+<li><p>功能概述</p>
+<ul>
+<li>信令单元定界定位</li>
+<li>差错检测</li>
+<li>差错校正</li>
+<li>初始定位</li>
+<li>信令链路差错率监视</li>
+<li>流量控制</li>
+<li>处理机故障控制</li>
+</ul>
+</li>
+<li><p>信令单元基本格式</p>
+<ul>
+<li><p>信令单元是No.7信令系统中传送信令信息的数据包</p>
+</li>
+<li><p>由第二功能级处理</p>
+</li>
+<li><p>采用可变长度形式和整数个八位位组</p>
+</li>
+<li><p>共定义了三种类型的信令单元，</p>
+<ul>
+<li>消息信令单元(MSU：Message Signaling Unit)：用来运载高层(用户部分或信令网管理功能)产生的信令消息</li>
+<li>链路状态信令单元(LSSU: Link State Signaling<br>Unit)：用来传送链路状态信息；</li>
+<li>插入信令单元(FISU：Filled-In Signaling Unit)：在无MSU和LSSU可发时发送</li>
+<li>具体格式见PDF 37页</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>MTP3信令网功能</p>
+<ul>
+<li><p>保证无论信令链路和STP点状态如何，信令消息可以可靠地从信令源点到达目的点</p>
+</li>
+<li><p>信令消息处理</p>
+<ul>
+<li>保证源信令点产生的信令消息正确传到目的令点</li>
+</ul>
+</li>
+<li><p>信令网管理</p>
+<ul>
+<li>在信令链路或信令点故障时，保证维持信令业务，恢复正常信令条件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>电话用户部分</p>
+<ul>
+<li><p>与随路信令的比较</p>
+<ul>
+<li>公共信令不分记发器信令和线路信令，所有的消息都通过MSU消息发送</li>
+<li>TUP是No.7信令系统的第四功能级，定义了用于电话接续所需的各类局间信令。提供了丰富的信令信息，不仅支持基本的电话业务，还可以支持部分用户补充业务。</li>
+</ul>
+</li>
+<li><p>TUP消息类型</p>
+<ul>
+<li><p>前向地址消息(FAM)</p>
+<ul>
+<li>IAM：初始地址消息。</li>
+<li>IAI： 带附加信息的初始地址消息。</li>
+<li>SAM：后续地址消息</li>
+<li>SAO：只带一位号码的后续地址消息</li>
+<li>GSM: 一般建立消息</li>
+</ul>
+</li>
+<li><p>后向建立消息（BSM</p>
+<ul>
+<li>GRQ: 一般请求消息</li>
+</ul>
+</li>
+<li><p>成功的后向建立消息（SBM）</p>
+<ul>
+<li>ACM：地址全消息，表示被叫空闲，呼叫建立成功。</li>
+</ul>
+</li>
+<li><p>不成功后向建立消息（UBM）：</p>
+</li>
+<li><p>监视消息（CCM）：</p>
+</li>
+<li><p>呼叫监视消息（CSM）：</p>
+</li>
+<li><p>电路群监视消息（GSM）：</p>
+</li>
+<li><p>电路网管理消息（CNM）：</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-SIP-协议"><a href="#4-SIP-协议" class="headerlink" title="4.SIP 协议"></a>4.SIP 协议</h2><h3 id="SIP-Session-Initiation-Protocol-会话发起协议"><a href="#SIP-Session-Initiation-Protocol-会话发起协议" class="headerlink" title="SIP(Session Initiation Protocol)会话发起协议"></a>SIP(Session Initiation Protocol)会话发起协议</h3><ul>
+<li><p>是由IETF提出的IP电话信令协议</p>
+</li>
+<li><p>基于文本的应用层控制协议，独立于底层协议，用于建立、修改和终止IP网上的双方或多方多媒体会话。</p>
+</li>
+<li><p>特点</p>
+<ul>
+<li>应用层协议，独立于较低层次的传输协议；</li>
+<li>◼ 基于文本的消息编码，使用UTF-8字符集，易于实现、调试</li>
+<li>方便，便于跟踪和手工操作；</li>
+<li>◼ 具有多个层次的可实现性，最小的实现非常简单。最完全</li>
+<li>的实现相对复杂，但能够完成非常多的功能；</li>
+<li>◼ 通过代理、重定向功能支持用户的移动性；</li>
+<li>◼ 易实现性；</li>
+<li>◼ 易扩展性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="SIP功能组成"><a href="#SIP功能组成" class="headerlink" title="SIP功能组成"></a>SIP功能组成</h3>
       
     </div>
 
