@@ -155,6 +155,281 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/02/JavaLearning/IO%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CXK`s Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/02/JavaLearning/IO%E6%B5%81/" class="post-title-link" itemprop="url">JavaLearning/IO流</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-02 21:25:26" itemprop="dateCreated datePublished" datetime="2020-05-02T21:25:26+08:00">2020-05-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><h2 id="1-FILE类"><a href="#1-FILE类" class="headerlink" title="1 FILE类"></a>1 FILE类</h2><h3 id="文件和目录路径名的抽象表示。"><a href="#文件和目录路径名的抽象表示。" class="headerlink" title="文件和目录路径名的抽象表示。"></a>文件和目录路径名的抽象表示。</h3><h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><ul>
+<li>File(File parent, String child)<br>从父抽象路径名和子路径名字符串创建新的 File实例。 </li>
+<li>File(String pathname)<br>通过将给定的路径名字符串转换为抽象路径名来创建新的 File实例。 </li>
+<li>File(String parent, String child)<br>从父路径名字符串和子路径名字符串创建新的 File实例。 </li>
+</ul>
+<h3 id="创建-删除-功能"><a href="#创建-删除-功能" class="headerlink" title="创建 删除 功能"></a>创建 删除 功能</h3><ul>
+<li><p>boolean createNewFile()<br>当且仅当具有该名称的文件尚不存在时，原子地创建一个由该抽象路径名命名的新的空文件。  </p>
+</li>
+<li><p>boolean delete()<br>删除由此抽象路径名表示的文件或目录。 </p>
+</li>
+<li><p>public boolean mkdir()创建由此抽象路径名命名的目录</p>
+<ul>
+<li>结果<br>true当且仅当该目录被创建时; false否则 </li>
+<li>父目录必须存在</li>
+</ul>
+</li>
+<li><p>public boolean mkdirs()创建由此抽象路径名命名的目录，包括任何必需但不存在的父目录。 请注意，如果此操作失败，它可能已成功创建一些必需的父目录。 </p>
+</li>
+</ul>
+<h3 id="判断获取功能"><a href="#判断获取功能" class="headerlink" title="判断获取功能"></a>判断获取功能</h3><ul>
+<li>String getAbsolutePath()<br>返回此抽象路径名的绝对路径名字符串。  </li>
+<li>String getName()<br>返回由此抽象路径名表示的文件或目录的名称。  </li>
+<li>String getPath()<br>将此抽象路径名转换为路径名字符串 </li>
+<li>boolean isDirectory()<br>测试此抽象路径名表示的文件是否为目录。 </li>
+<li>boolean isFile()<br>测试此抽象路径名表示的文件是否为普通文件。 </li>
+<li>String[] list()<br>返回一个字符串数组，命名由此抽象路径名表示的目录中的文件和目录。  </li>
+<li>File[] listFiles()<br>返回一个抽象路径名数组，表示由该抽象路径名表示的目录中的文件。  </li>
+</ul>
+<h2 id="2-字节流"><a href="#2-字节流" class="headerlink" title="2 字节流"></a>2 字节流</h2><h3 id="抽象基类InputStream"><a href="#抽象基类InputStream" class="headerlink" title="抽象基类InputStream"></a>抽象基类InputStream</h3><ul>
+<li><p>读入数据</p>
+<ul>
+<li>abstract int read()<br>从输入流读取数据的下一个字节。  </li>
+<li>int read(byte[] b)<br>从输入流读取一些字节数，并将它们存储到缓冲区 b 。  </li>
+<li>int read(byte[] b, int off, int len)<br>从输入流读取最多 len字节的数据到一个字节数组。  </li>
+<li>结果<br>读取到缓冲区的总字节数，或者如果没有更多的数据，因为已经到达流的末尾，则是 -1 。 </li>
+</ul>
+</li>
+<li><p>具体子类FileInputStream</p>
+<ul>
+<li><p>构造方法</p>
+<ul>
+<li>FileInputStream(File file)<br>通过打开与实际文件的连接创建一个 FileInputStream ，该文件由文件系统中的 File对象 file命名。 </li>
+<li>FileInputStream(String name)<br>通过打开与实际文件的连接来创建一个 FileInputStream ，该文件由文件系统中的路径名 name命名。 </li>
+</ul>
+</li>
+<li><p>具体子类BufferedInputStream</p>
+<ul>
+<li><p>构造方法</p>
+<ul>
+<li>BufferedInputStream(InputStream in)<br>创建一个 BufferedInputStream并保存其参数，输入流 in ，供以后使用。</li>
+<li>BufferedInputStream(InputStream in, int size)<br>创建 BufferedInputStream具有指定缓冲区大小，并保存其参数，输入流 in ，供以后使用。 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="抽象基类OutputStream"><a href="#抽象基类OutputStream" class="headerlink" title="抽象基类OutputStream"></a>抽象基类OutputStream</h3><ul>
+<li><p>写入数据</p>
+<ul>
+<li>void write(byte[] b)<br>将 b.length字节从指定的字节数组写入此输出流。 </li>
+<li>void write(byte[] b, int off, int len)<br>从指定的字节数组写入 len个字节，从偏移 off开始输出到此输出流。  </li>
+<li>abstract void write(int b)<br>将指定的字节写入此输出流。  </li>
+<li>void flush()<br>刷新此输出流并强制任何缓冲的输出字节被写出。  </li>
+</ul>
+</li>
+<li><p>具体子类FilterOutputStream</p>
+<ul>
+<li><p>构造方法</p>
+<ul>
+<li>FilterOutputStream(OutputStream out)<br>创建一个基于指定底层输出流的输出流过滤器。</li>
+</ul>
+</li>
+<li><p>具体子类 BufferedOutputStream</p>
+<ul>
+<li>BufferedOutputStream(OutputStream out)<br>创建一个新的缓冲输出流，以将数据写入指定的底层输出流。 </li>
+<li>BufferedOutputStream(OutputStream out, int size)<br>创建一个新的缓冲输出流，以便以指定的缓冲区大小将数据写入指定的底层输出流。 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><ul>
+<li>可以复制任意文件数据，有4种方式们一般采用字节缓冲流一次读写一个字节数组的方式读写</li>
+<li>缓冲区大小默认：8192</li>
+</ul>
+<h2 id="3-字符流"><a href="#3-字符流" class="headerlink" title="3 字符流"></a>3 字符流</h2><h3 id="抽象基类Reader"><a href="#抽象基类Reader" class="headerlink" title="抽象基类Reader"></a>抽象基类Reader</h3><ul>
+<li><p>具体子类：InputStreamReader</p>
+<ul>
+<li><p>构造方法：InputStreamReader(InputStream in, String charsetName) </p>
+</li>
+<li><p>子类:FIleReader</p>
+<ul>
+<li><p>构造方法</p>
+<ul>
+<li>FileReader(File file) </li>
+<li>FileReader(String fileName) </li>
+</ul>
+</li>
+<li><p>原因：InputStreamReader使用繁琐</p>
+</li>
+<li><p>涉及到编码问题不能使用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>具体子类BufferedReader</p>
+<ul>
+<li><p>构造方法</p>
+<ul>
+<li>BufferedReader(Reader in)<br>创建使用默认大小的输入缓冲区的缓冲字符输入流。</li>
+<li>BufferedReader(Reader in, int sz)<br>创建使用指定大小的输入缓冲区的缓冲字符输入流。 </li>
+</ul>
+</li>
+<li><p>特有</p>
+<ul>
+<li><p>public String readLine() throws IOException</p>
+<ul>
+<li>读一行文字。 一行被视为由换行符（’\ n’），回车符（’\ r’）中的任何一个或随后的换行符终止。</li>
+<li>结果<br>包含行的内容的字符串，不包括任何行终止字符，如果已达到流的末尾，则为null </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>读入数据</p>
+<ul>
+<li>int read()<br>读一个字符  </li>
+<li>int read(char[] cbuf, int offset, int length)<br>将字符读入数组的一部分。  </li>
+<li>结果<br>读取的字符数，如果已经达到流的结尾，则为-1 </li>
+</ul>
+</li>
+</ul>
+<h3 id="抽象基类Writer"><a href="#抽象基类Writer" class="headerlink" title="抽象基类Writer"></a>抽象基类Writer</h3><ul>
+<li><p>子类：OutputStreamWriter</p>
+<ul>
+<li><p>构造方法：OutputStreamWriter(OutputStream out, String charsetName) </p>
+</li>
+<li><p>flush（）</p>
+<ul>
+<li>刷新流，还可以写数据</li>
+</ul>
+</li>
+<li><p>close（）</p>
+<ul>
+<li>关闭前会先刷新</li>
+</ul>
+</li>
+<li><p>子类：FileWriter</p>
+<ul>
+<li><p>原因：OutputStreamWriter使用繁琐</p>
+</li>
+<li><p>构造方法</p>
+<ul>
+<li>FileWriter(File file)<br>给一个File对象构造一个FileWriter对象。 </li>
+<li>FileWriter(String fileName)<br>构造一个给定文件名的FileWriter对象。 </li>
+<li>FileWriter(String fileName, boolean append)<br>构造一个FileWriter对象，给出一个带有布尔值的文件名，表示是否附加写入的数据。 </li>
+</ul>
+</li>
+<li><p>涉及到编码问题不能使用</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>子类：BufferedWrite</p>
+<ul>
+<li><p>构造方法</p>
+<ul>
+<li>BufferedWriter(Writer out)<br>创建使用默认大小的输出缓冲区的缓冲字符输出流。 </li>
+</ul>
+</li>
+<li><p>特有</p>
+<ul>
+<li>void newLine()<br>写一行行分隔符。  </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>写入数据</p>
+<ul>
+<li>void write(char[] cbuf, int off, int len)<br>写入字符数组的一部分。  </li>
+<li>void write(int c)<br>写一个字符  </li>
+<li>void write(String str, int off, int len)<br>写一个字符串的一部分。  </li>
+</ul>
+</li>
+</ul>
+<h3 id="补充知识"><a href="#补充知识" class="headerlink" title="补充知识"></a>补充知识</h3><ul>
+<li><p>缓冲类</p>
+<ul>
+<li>BUFFER类默认缓冲区大小为8192字节</li>
+</ul>
+</li>
+<li><p>换行符在不同系统中不同</p>
+<ul>
+<li><p>window</p>
+<ul>
+<li>\r\n</li>
+</ul>
+</li>
+<li><p>mac</p>
+<ul>
+<li>\r</li>
+</ul>
+</li>
+<li><p>linux</p>
+<ul>
+<li>\n</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>只能复制文本数据，有5种方式，一般采用字符缓冲流的特有功能</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/01/%E5%8C%97%E9%82%AE%E8%AF%BE%E7%A8%8B-%E7%8E%B0%E4%BB%A3%E4%BA%A4%E6%8D%A2%E5%8E%9F%E7%90%86/%E7%AC%AC%E4%BA%94%E7%AB%A0%20%E4%BF%A1%E4%BB%A4%E4%B8%8E%E5%8D%8F%E8%AE%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -957,7 +1232,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
