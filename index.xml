@@ -1,23 +1,9 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>LoveIt</title>
+        <title>陈限空</title>
         <link>https://chenxiankong.github.io/</link>
-        <description>About LoveIt Theme</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 24 Oct 2021 00:14:19 &#43;0800</lastBuildDate>
+        <description>关于</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
             <atom:link href="https://chenxiankong.github.io/index.xml" rel="self" type="application/rss+xml" />
-        <item>
-    <title>My Second</title>
-    <link>https://chenxiankong.github.io/my-second/</link>
-    <pubDate>Sun, 24 Oct 2021 00:14:19 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://chenxiankong.github.io/my-second/</guid>
-    <description><![CDATA[hello world]]></description>
-</item><item>
-    <title>My First Post</title>
-    <link>https://chenxiankong.github.io/my-first-post/</link>
-    <pubDate>Sat, 09 Oct 2021 23:51:07 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://chenxiankong.github.io/my-first-post/</guid>
-    <description><![CDATA[你好世界 ]]></description>
-</item></channel>
+        </channel>
 </rss>
