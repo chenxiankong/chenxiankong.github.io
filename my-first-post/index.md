@@ -1,7 +1,7 @@
 # My First Post
 
 
-Mysql 的MVCC
+
 
 # 前置知识
 
@@ -25,8 +25,6 @@ postgres在行上实现mvcc，Mysql innodb 在undolog中实现
 
 MVCC仅在RR RC隔离级别下工作,其他两个隔离级别够和MVCC不兼容, 因为 RU总是读取最新的数据行, 而不是符合当前事务版本的数据行。而 `SERIALIZABLE` 则会对所有读取的行都加锁
 
-
-
 # Rel
 
 https://segmentfault.com/a/1190000012650596
@@ -36,8 +34,6 @@ mysql8.0官方文档：https://dev.mysql.com/doc/refman/8.0/en/i
 # end
 
 新插入数据时，并不涉及undo log的读取，举个例子，以RR级别为例，假如事务A执行了select操作，同时事务B执行了insert操作（两个操作的数据范围相近），那么A再尝试执行同样的insert时，会因为B已经插了数据而导致A的操作的失败，但是对于A来说，无法察觉这行数据的存在，所以A产生了幻读。并且，在RR级别下，幻读的问题是已经解决了的，通过对数据加行锁/间隙锁。可以参考。
-
-
 
 #### 一致的非锁定读取
 
@@ -60,16 +56,8 @@ https://dev.mysql.com/doc/refman/8.0/en/innodb-consistent-read.html
 一致读取不适用于某些 DDL 语句：
 
 - 一致性读取不起作用`DROP TABLE`，因为 MySQL 无法使用已删除并`InnoDB`破坏该表的表。
-
 - 一致读取不适 `ALTER TABLE`用于制作原始表的临时副本并在构建临时副本时删除原始表的操作。当您在事务中重新发出一致读取时，新表中的行不可见，因为在获取事务快照时这些行不存在。在这种情况下，事务返回一个错误： `ER_TABLE_DEF_CHANGED`， “表的定义发生了变化，请重试交易”。
-
 - 该类型读为like子句选择不同 `INSERT INTO ... SELECT`，`UPDATE ... (SELECT)`和 `CREATE TABLE ... SELECT`没有指定`FOR UPDATE`或`FOR SHARE`：
-
 - 默认情况下，`InnoDB`对这些语句使用更强的锁，这 `SELECT`部分的作用类似于 `READ COMMITTED`，其中每个一致的读取，即使在同一个事务中，也会设置和读取自己的新快照。
-
 - 要在这种情况下执行非锁定读取，请将事务的隔离级别设置为 `READ UNCOMMITTED`或 `READ COMMITTED`避免对从选定表读取的行设置锁定。
-
-
-
-# 
 

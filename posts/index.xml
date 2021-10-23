@@ -16,6 +16,6 @@
     <pubDate>Sat, 09 Oct 2021 23:51:07 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://chenxiankong.github.io/my-first-post/</guid>
-    <description><![CDATA[Mysql 的MVCC 前置知识 查看隔离级别：select @@transaction_isolation; 脏读：读到了不存在的数据 不可重复读：一次事务内对同一记录的读取结果可能不同（update） 可]]></description>
+    <description><![CDATA[前置知识 查看隔离级别：select @@transaction_isolation; 脏读：读到了不存在的数据 不可重复读：一次事务内对同一记录的读取结果可能不同（update） 可重复读（一致]]></description>
 </item></channel>
 </rss>
