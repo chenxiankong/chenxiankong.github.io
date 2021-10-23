@@ -3,9 +3,16 @@
         <title>LoveIt</title>
         <link>https://chenxiankong.github.io/</link>
         <description>About LoveIt Theme</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sat, 09 Oct 2021 23:51:07 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 24 Oct 2021 00:14:19 &#43;0800</lastBuildDate>
             <atom:link href="https://chenxiankong.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>My Second</title>
+    <link>https://chenxiankong.github.io/my-second/</link>
+    <pubDate>Sun, 24 Oct 2021 00:14:19 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://chenxiankong.github.io/my-second/</guid>
+    <description><![CDATA[hello world]]></description>
+</item><item>
     <title>My First Post</title>
     <link>https://chenxiankong.github.io/my-first-post/</link>
     <pubDate>Sat, 09 Oct 2021 23:51:07 &#43;0800</pubDate>
