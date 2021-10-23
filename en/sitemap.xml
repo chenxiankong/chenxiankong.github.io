@@ -5,7 +5,7 @@
             <loc>https://chenxiankong.github.io/en/categories/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="zh-cn"
-                        href="https://chenxiankong.github.io/zh-cn/categories/"
+                        href="https://chenxiankong.github.io/categories/"
                         /><xhtml:link
                         rel="alternate"
                         hreflang="fr"
@@ -18,7 +18,7 @@
             <loc>https://chenxiankong.github.io/en/tags/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="zh-cn"
-                        href="https://chenxiankong.github.io/zh-cn/tags/"
+                        href="https://chenxiankong.github.io/tags/"
                         /><xhtml:link
                         rel="alternate"
                         hreflang="fr"
@@ -31,7 +31,7 @@
             <loc>https://chenxiankong.github.io/en/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="zh-cn"
-                        href="https://chenxiankong.github.io/zh-cn/"
+                        href="https://chenxiankong.github.io/"
                         /><xhtml:link
                         rel="alternate"
                         hreflang="fr"
