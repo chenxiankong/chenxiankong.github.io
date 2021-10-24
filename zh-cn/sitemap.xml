@@ -2,9 +2,9 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://chenxiankong.github.io/my-second/</loc><lastmod>2021-10-24T00:14:19&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/posts/</loc><lastmod>2021-10-24T00:14:19&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/</loc><lastmod>2021-10-24T00:14:19&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority><xhtml:link
+            <loc>https://chenxiankong.github.io/aaa/</loc><lastmod>2021-10-24T22:55:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://chenxiankong.github.io/posts/</loc><lastmod>2021-10-24T22:55:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://chenxiankong.github.io/</loc><lastmod>2021-10-24T22:55:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority><xhtml:link
                         rel="alternate"
                         hreflang="en"
                         href="https://chenxiankong.github.io/en/"
@@ -17,7 +17,8 @@
                     hreflang="zh-cn"
                     href="https://chenxiankong.github.io/"
                     /></url><url>
-            <loc>https://chenxiankong.github.io/my-first-post/</loc><lastmod>2021-10-09T23:52:45&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
+            <loc>https://chenxiankong.github.io/my-second/</loc><lastmod>2021-10-24T20:21:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://chenxiankong.github.io/my-first-post/</loc><lastmod>2021-10-24T20:21:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://chenxiankong.github.io/categories/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="en"
