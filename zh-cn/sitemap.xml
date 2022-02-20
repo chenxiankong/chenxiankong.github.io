@@ -2,9 +2,9 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://chenxiankong.github.io/posts/</loc><lastmod>2021-10-26T11:42:05&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/todo%E8%AE%B0%E5%BD%95/</loc><lastmod>2021-10-26T11:42:05&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/</loc><lastmod>2021-10-26T11:42:05&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority><xhtml:link
+            <loc>https://chenxiankong.github.io/posts/</loc><lastmod>2021-10-26T11:42:05&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://chenxiankong.github.io/todo%E8%AE%B0%E5%BD%95/</loc><lastmod>2021-10-26T11:42:05&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://chenxiankong.github.io/</loc><lastmod>2021-10-26T11:42:05&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="en"
                         href="https://chenxiankong.github.io/en/"
@@ -17,10 +17,10 @@
                     hreflang="zh-cn"
                     href="https://chenxiankong.github.io/"
                     /></url><url>
-            <loc>https://chenxiankong.github.io/ttttttt/</loc><lastmod>2021-10-24T23:12:56&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/aaa/</loc><lastmod>2021-10-24T23:07:36&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/my-second/</loc><lastmod>2021-10-24T20:21:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://chenxiankong.github.io/my-first-post/</loc><lastmod>2021-10-24T20:21:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://chenxiankong.github.io/ttttttt/</loc><lastmod>2021-10-24T23:12:56&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://chenxiankong.github.io/aaa/</loc><lastmod>2021-10-24T23:07:36&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://chenxiankong.github.io/my-second/</loc><lastmod>2021-10-24T20:21:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
+            <loc>https://chenxiankong.github.io/my-first-post/</loc><lastmod>2021-10-24T20:21:41&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url><url>
             <loc>https://chenxiankong.github.io/categories/</loc><changefreq>weekly</changefreq><priority>0.5</priority><xhtml:link
                         rel="alternate"
                         hreflang="en"
