@@ -3,9 +3,16 @@
         <title>陈限空</title>
         <link>https://chenxiankong.github.io/</link>
         <description>关于</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 26 Oct 2021 11:42:05 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 20 Feb 2022 22:40:04 &#43;0800</lastBuildDate>
             <atom:link href="https://chenxiankong.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Mac初始化</title>
+    <link>https://chenxiankong.github.io/mac%E5%88%9D%E5%A7%8B%E5%8C%96/</link>
+    <pubDate>Sun, 20 Feb 2022 22:40:04 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://chenxiankong.github.io/mac%E5%88%9D%E5%A7%8B%E5%8C%96/</guid>
+    <description><![CDATA[必备好软 ShowyEege ShowyEdge (pqrs.org) 便捷显示当前输入法 Karabiner-Elements 键盘改键神器 Karabiner-Elements (pqrs.org) 复杂配置文件目录: 1 ~/.config/karabiner/ 附上我的配置文件 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26]]></description>
+</item><item>
     <title>Todo记录</title>
     <link>https://chenxiankong.github.io/todo%E8%AE%B0%E5%BD%95/</link>
     <pubDate>Tue, 26 Oct 2021 11:42:05 &#43;0800</pubDate>
