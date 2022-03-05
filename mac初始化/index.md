@@ -7,7 +7,7 @@
 
 [ShowyEdge (pqrs.org)](https://showyedge.pqrs.org/)
 
-便捷显示当前输入法
+便捷显示当前输入法1
 
 ## Karabiner-Elements
 

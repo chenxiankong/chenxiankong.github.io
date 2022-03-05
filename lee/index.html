@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Lee - 陈限空</title><meta name="Description" content="关于"><meta property="og:title" content="Lee" />
+<meta property="og:description" content="死锁的原理和解决方法 虚拟机栈参与内存回收吗 ping ttl volitale什么情况下必须被使用 innodb锁机制 mvcc 如果让你来实现一个HashMap你会怎" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://chenxiankong.github.io/lee/" /><meta property="og:image" content="https://chenxiankong.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-03-05T21:41:51+08:00" />
+<meta property="article:modified_time" content="2022-03-05T22:34:08+08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://chenxiankong.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Lee"/>
+<meta name="twitter:description" content="死锁的原理和解决方法 虚拟机栈参与内存回收吗 ping ttl volitale什么情况下必须被使用 innodb锁机制 mvcc 如果让你来实现一个HashMap你会怎"/>
+<meta name="application-name" content="chenxiankong`s Blog">
+<meta name="apple-mobile-web-app-title" content="chenxiankong`s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://chenxiankong.github.io/lee/" /><link rel="prev" href="https://chenxiankong.github.io/mac%E5%88%9D%E5%A7%8B%E5%8C%96/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Lee",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/chenxiankong.github.io\/lee\/"
+        },"image": ["https:\/\/chenxiankong.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","wordcount":  14318 ,
+        "url": "https:\/\/chenxiankong.github.io\/lee\/","datePublished": "2022-03-05T21:41:51+08:00","dateModified": "2022-03-05T22:34:08+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/chenxiankong.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "陈限空"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="陈限空"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>chexiankong`s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/about/"> 关于 </a><a class="menu-item" href="https://github.com/chenxiankong" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i>  </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="陈限空"><span class="header-title-pre"><i class='far fa-kiss-wink-heart fa-fw'></i></span>chexiankong`s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/about/" title="">关于</a><a class="menu-item" href="https://github.com/chenxiankong" title="GitHub" rel="noopener noreffer" target="_blank"><i class='fab fa-github fa-fw'></i></a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Lee</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>陈限空</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-03-05">2022-03-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 14318 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 29 分钟&nbsp;<span id="/lee/" class="leancloud_visitors" data-flag-title="Lee">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据库">数据库</a>
+      <ul>
+        <li><a href="#1mysql常用引擎引擎的区别">1.mysql常用引擎，引擎的区别</a></li>
+        <li><a href="#2给了一个查询语句怎么建索引">2.给了一个查询语句怎么建索引</a></li>
+        <li><a href="#3索引失效">3.索引失效</a></li>
+      </ul>
+    </li>
+    <li><a href="#操作系统">操作系统</a>
+      <ul>
+        <li><a href="#1进程的通信方式">1.进程的通信方式</a></li>
+        <li><a href="#2共享内存方式的细节">2.共享内存方式的细节</a></li>
+        <li><a href="#3僵尸进程与孤儿进程">3.僵尸进程与孤儿进程</a></li>
+        <li><a href="#4线程与进程的区别">4.线程与进程的区别</a></li>
+      </ul>
+    </li>
+    <li><a href="#计算机网络">计算机网络</a>
+      <ul>
+        <li><a href="#1为什么需要timewait状态">1.为什么需要timewait状态</a></li>
+        <li><a href="#2http10-11-20的区别">2.HTTP1.0 1.1 2.0的区别</a></li>
+        <li><a href="#3dns使用什么协议端口是什么">3.DNS使用什么协议，端口是什么？</a></li>
+        <li><a href="#4网关网桥路由器交换机的区别">4.网关，网桥，路由器，交换机的区别</a></li>
+      </ul>
+    </li>
+    <li><a href="#java-多线程">JAVA-多线程</a>
+      <ul>
+        <li><a href="#1终止线程的四种方式"><strong>1.终止线程的四种方式</strong></a></li>
+        <li><a href="#2sleep和wait方法的区别"><strong>2.sleep和wait方法的区别</strong></a></li>
+        <li><a href="#3thread-和runnable的区别">3.Thread 和Runnable的区别</a></li>
+        <li><a href="#4synchronized-和-reentrantlock-的对比">4.Synchronized 和 ReenTrantLock 的对比</a></li>
+        <li><a href="#5synchronized-关键字底层原理总结">5.synchronized 关键字底层原理总结</a></li>
+        <li><a href="#6并发编程的三个重要特性">6.并发编程的三个重要特性</a></li>
+        <li><a href="#7说说-synchronized-关键字和-volatile-关键字的区别">7.说说 synchronized 关键字和 volatile 关键字的区别</a></li>
+      </ul>
+    </li>
+    <li><a href="#java-jvm">JAVA-JVM</a>
+      <ul>
+        <li><a href="#1多态-动态绑定-静态绑定">1.多态 动态绑定 静态绑定</a></li>
+      </ul>
+    </li>
+    <li><a href="#java-基础知识">JAVA-基础知识</a>
+      <ul>
+        <li><a href="#1简述内部类静态内部类匿名内部类的区别">1.简述内部类、静态内部类、匿名内部类的区别</a></li>
+        <li><a href="#2数组和链表的异同">2.数组和链表的异同</a></li>
+      </ul>
+    </li>
+    <li><a href="#算法">算法</a></li>
+    <li><a href="#特定问题类">特定问题类</a>
+      <ul>
+        <li><a href="#1海量数据找东西">1.海量数据找东西</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>死锁的原理和解决方法</p>
+<p>虚拟机栈参与内存回收吗</p>
+<p>ping
+ttl
+volitale什么情况下必须被使用
+innodb锁机制
+mvcc
+如果让你来实现一个HashMap你会怎么实现</p>
+<p>JVM或者编译器如何实现多态的？子类方法调用过程中动态绑定的实现过程？</p>
+<p>非公平锁 失败</p>
+<p>IO复用技术</p>
+<p>设计模式
+MYSQL
+HTTP 头部字段
+你了解的网络协议
+HANUOTa问题
+TCP UDP 区别 <a href="https://www.cnblogs.com/fundebug/p/differences-of-tcp-and-udp.html" target="_blank" rel="noopener noreffer">https://www.cnblogs.com/fundebug/p/differences-of-tcp-and-udp.html</a></p>
+<p>计算机网络 学习 资源http://www.52im.net/thread-1007-1-1.html
+TCP UDP 头部
+HTTP 状态码  3xx 5xx 4xxx
+断点重续原理
+HTTP 2.0
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200731122615767.png"
+        data-srcset="typore_pic/image-20200731122615767.png, typore_pic/image-20200731122615767.png 1.5x, typore_pic/image-20200731122615767.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200731122615767.png"
+        title="image-20200731122615767" />
+外部排序
+系统调用是什么，怎么实现
+内核态，用户态，系统怎么识别
+IP是如何标识主机的，原理
+MAC地址的作用
+<a href="https://www.cnblogs.com/shengulong/p/5707967.html" target="_blank" rel="noopener noreffer">https://www.cnblogs.com/shengulong/p/5707967.html</a>
+分页的置换是由系统控制还是进程控制
+TCP和UDP的区别
+TCP为什么是字节流，UDP为什么是。。。流 
+TCP的字节流怎么识别两个数据（怎么区分开两次数据） 
+LBD是什么</p>
+<p>wait()
+notrfy机制</p>
+<p>threadlocal机制
+链接：https://ac.nowcoder.com/acm/contest/6220/A
+来源：牛客网</p>
+<p>牛牛想知道所有的长度为n的数中，各个位上的数字之和为m的这些数的和是多少呢。给定n和m，求这些数的和。</p>
+<h1 id="数据库">数据库</h1>
+<h2 id="1mysql常用引擎引擎的区别">1.mysql常用引擎，引擎的区别</h2>
+<p>常用引擎：InnoDB MyISAM</p>
+<p>1）事物安全：InnoDB支持事物安全，MyISAM不支持。</p>
+<p>2）对外键的支持：
+InnoDB对外键支持情况较好，MyISAM不支持外键。</p>
+<p>4）空间使用：
+InnoDB对空间使用程度较高，MyISAM对空间使用程度较低。</p>
+<p>5）内存使用：
+InnoDB和MEMORY对内存使用程度较高，MyISAM对内存使用程度较低。</p>
+<p>6）插入数据的速度：
+InnoDB插入数据的速度较低，MyISAM和MEMORY插入数据的速度较高。</p>
+<p>7）对应索引结构的的差别：都是B+树</p>
+<p>Innodb：Innodb的索引文件本身就是数据文件，主键索引的叶子节点储存的是实际的数据，这种索引有被称为聚集索引。普通索引叶子节点储存的是键值与对应的主键，所以会有回表查询，与索引覆盖。</p>
+<p>MyISAM：叶子节点存储的是键值与指向数据的指针</p>
+<p>基于以上的说法，Innodb必须有主键，MyISAM可以没有</p>
+<h2 id="2给了一个查询语句怎么建索引">2.给了一个查询语句怎么建索引</h2>
+<p>在where字句上的字段建立索引</p>
+<p>为最常查询的字段建立索引</p>
+<p>从查询语句的左边字段开始建立索引（最左匹配原则）</p>
+<h2 id="3索引失效">3.索引失效</h2>
+<p>1.or语句前后没有同时使用索引。当or左右查询字段只有一个是索引，该索引失效，只有当or左右查询字段均为索引时，才会生效
+2.复合索引未用左列字段;
+3.like以%开头;
+4.需要类型转换;
+5.where中索引列有运算;
+6.where中索引列使用了函数;
+7.如果mysql觉得全表扫描更快时（数据少）;</p>
+<h1 id="操作系统">操作系统</h1>
+<h2 id="1进程的通信方式">1.进程的通信方式</h2>
+<p>进程间通信是指在不同进程之间传播或交换信息，在Linux环境下，进程地址空间相互独立，每个进程各自有不同的用户地址空间，进程之间不能相互访问。必须通过内核才能进行数据交换。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200721193204955.png"
+        data-srcset="typore_pic/image-20200721193204955.png, typore_pic/image-20200721193204955.png 1.5x, typore_pic/image-20200721193204955.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200721193204955.png"
+        title="image-20200721193204955" /></p>
+<p>1.管道：<strong>管道是一种半双工的通信方式，数据只能单向流动</strong></p>
+<ul>
+<li>匿名管道:匿名管道只能在具有亲缘关系的进程间使用，进程的亲缘关系通常指父子进程关系</li>
+<li>命名管道：不同于匿名管道之处在于它提供一个路径名与之关联，以FIFO的文件形式存在于文件系统中。这样，即使与FIFO的创建进程不存在亲缘关系的进程，只要可以访问该路径，就能够彼此通过FIFO相互通信（能够访问该路径的进程与FIFO的创建进程之间通信），因此，通过FIFO不相关的进程也能交换数据。值得注意的是，FIFO严格遵循先进先出（first in first out），对管道及FIFO的读总是从开始处返回数据，对它们的写则把数据添加到末尾。</li>
+</ul>
+<p>2.信号：信号是一种比较复杂的通信方式，信号产生的条件：按键、硬件异常、进程调用kill函数将信号发送给另一个进程、用户调用kill命令将信号发送给其他进程，信号传递的消息比较少，<strong>主要用于通知接收进程某个事件已经发生。</strong></p>
+<p>3.信号量：信号量是一个计数器，<strong>可以用来控制多个进程对共享资源的访问。<strong>它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为</strong>进程间以及同一进程内不同线程之间</strong>的同步手段。</p>
+<p>4.消息队列：<strong>消息队列是消息的链表</strong>，<strong>存放在内核中并由消息队列标识符标识</strong>，消息队列克服了信号传递信息少，管道只能承载无格式字节流以及缓冲区大小受限等特点。消息队列起信箱作用，到了就挂在那里，需要的时候去取。消息队列提供了一种在两个不相关进程间传递数据的简单有效的方法。与命名管道相比：消息队列的优势在于，它独立于发送和接收进程而存在，这消除了在同步命名管道的打开和关闭时可能产生的一些困难。</p>
+<p>5.共享内存：共享内存就是<strong>映射一段能被其他进程所访问的内存</strong>，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式(不需要从用户态到内核态的切换)，它是针对其他进程间通信方式运行效率低而专门设计的。<strong>它往往与其他通信机制，如信号量</strong>，配合使用，来实现进程间的同步和通信。</p>
+<p>6.套接字s：</p>
+<h2 id="2共享内存方式的细节">2.共享内存方式的细节</h2>
+<p><strong>共享内存的特点：</strong></p>
+<ol>
+<li>共享内存是进程间共享数据的一种最快的方法。一个进程向共享的内存区域写入了数据，共享这个内存区域的所有进程就可以立刻看到其中的内容。</li>
+<li>使用共享内存要注意的是多个进程之间对一个给定存储区访问的互斥。若一个进程正在向共享内存区写数据，则在它做完这一步操作前，别的进程不应当去读、写这些数据。</li>
+</ol>
+<p><strong>2.共享内存的通信</strong></p>
+<p>因为所有进程共享同一块内存，共享内存在各种进程间通信方式中具有最高的效率。<strong>访问共享内存区域和访问进程独有的内存区域一样快</strong>，<strong>并不需要通过系统调用或者其它需要切入内核的过程来完成</strong>。同时它也避免了对数据的各种不必要的复制。
+因为系统内核没有对访问共享内存进行同步，<strong>您必须提供自己的同步措施</strong>。例如，在数据被写入之前不允许进程从共享内存中读取信息、不允许两个进程同时向同一个共享内存地址写入数据等。解决这些问题的常用方法是<strong>通过使用信号量进行同步。</strong></p>
+<p><strong>3.共享内存的内存模型</strong></p>
+<p>要使用一块共享内存，进程必须首先分配它。随后需要访问这个共享<strong>内存块的每一个进程都必须将这个共享内存绑定到自己的地址空间中</strong>。当完成通信之后，所有进程都将脱离共享内存，<strong>并且由一个进程释放该共享内存</strong>块。</p>
+<h2 id="3僵尸进程与孤儿进程">3.僵尸进程与孤儿进程</h2>
+<p>我们知道在unix/linux中，正常情况下，子进程是通过父进程创建的，子进程在创建新的进程。子进程的结束和父进程的运行是一个异步过程,即父进程永远无法预测子进程 到底什么时候结束。 当一个 进程完成它的工作终止之后，它的父进程需要调用wait()或者waitpid()系统调用取得子进程的终止状态。</p>
+<p><strong>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。</strong></p>
+<p><strong>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵尸进程。</strong></p>
+<p><strong>问题及危害</strong></p>
+<p><strong>僵尸进程的危害</strong>：unix提供了一种机制可以保证只要父进程想知道子进程结束时的状态信息， 就可以得到。这种机制就是: 在每个进程退出的时候,内核释放该进程所有的资源,包括打开的文件,占用的内存等。 但是仍然为其保留一定的信息(包括进程号the process ID,退出状态the termination status of the process,运行时间the amount of CPU time taken by the process等)。直到父进程通过wait / waitpid来取时才释放。 但这样就导致了问题，<strong>如果父进程不调用wait / waitpid的话，</strong> <strong>那么保留的那段信息就不会释放，其进程号就会一直被占用，但是系统所能使用的进程号是有限的，如果大量的产生僵尸进程，将因为没有可用的进程号而导致系统不能产生新的进程. 此即为僵尸进程的危害，应当避免。</strong></p>
+<p><strong>孤儿进程没啥危害</strong>：　<strong>孤儿进程是没有父进程的进程，孤儿进程这个重任就落到了init进程身上</strong>，init进程就好像是一个民政局，专门负责处理孤儿进程的善后工作。每当出现一个孤儿进程的时候，内核就把孤 儿进程的父进程设置为init，而init进程会循环地wait()它的已经退出的子进程。这样，当一个孤儿进程凄凉地结束了其生命周期的时候，init进程就会代表党和政府出面处理它的一切善后工作。<strong>因此孤儿进程并不会有什么危害。</strong></p>
+<p><strong>任何一个子进程(init除外)在exit()之后，并非马上就消失掉，而是留下一个称为僵尸进程(Zombie)的数据结构，等待父进程处理。</strong> 如果父进程在子进程结束之前退出，则子进程将由init接管。<strong>init将会以父进程的身份对僵尸状态的子进程进行处理。</strong></p>
+<p>僵尸进程危害场景：</p>
+<p>例如有个进程，它定期的产 生一个子进程，这个子进程需要做的事情很少，做完它该做的事情之后就退出了，因此这个子进程的生命周期很短，但是，父进程只管生成新的子进程，至于子进程 退出之后的事情，则一概不闻不问，这样，系统运行上一段时间之后，系统中就会存在很多的僵死进程，倘若用ps命令查看的话，就会看到很多状态为Z的进程。 严格地来说，僵死进程并不是问题的根源，罪魁祸首是产生出大量僵死进程的那个父进程。因此，当我们寻求如何消灭系统中大量的僵死进程时，答案就是把产生大 量僵死进程的那个元凶枪毙掉（也就是通过kill发送SIGTERM或者SIGKILL信号啦）。枪毙了元凶进程之后，它产生的僵死进程就变成了孤儿进 程，这些孤儿进程会被init进程接管，init进程会wait()这些孤儿进程，释放它们占用的系统进程表中的资源，这样，这些已经僵死的孤儿进程 就能瞑目而去了。</p>
+<h2 id="4线程与进程的区别">4.线程与进程的区别</h2>
+<p>进程：指在系统中正在运行的一个应用程序；程序一旦运行就是进程；进程——资源分配的最小单位。</p>
+<p>线程：系统分配处理器时间资源的基本单元，或者说进程之内独立执行的一个单元执行流。线程——程序执行的最小单位。</p>
+<p>地址空间：同一进程的线程共享本进程的地址空间，而进程之间则是独立的地址空间。</p>
+<p>资源拥有：同一进程内的线程共享本进程的资源如内存、I/O、cpu等，但是进程之间的资源是独立的。</p>
+<h1 id="计算机网络">计算机网络</h1>
+<h2 id="1为什么需要timewait状态">1.为什么需要timewait状态</h2>
+<p>1.防止具有相同「四元组」的「旧」数据包被收到；允许老的重复分节在网络中消失</p>
+<p>​	经过 <code>2MSL</code> 这个时间，<strong>足以让两个方向上的数据包都被丢弃，使得原来连接的数据包在网络中都自然消失，再出现的数据包一定都是新建立连接所产生的。</strong></p>
+<p>2.保证「被动关闭连接」的一方能被正确的关闭，即保证最后的 ACK 能让被动关闭方接收，从而帮助其正常关闭；</p>
+<h2 id="2http10-11-20的区别">2.HTTP1.0 1.1 2.0的区别</h2>
+<p>HTTP1.0</p>
+<ul>
+<li>HTTP 1.0 被设计<strong>用来使用短链</strong>接，即每次发送数据都会经过 TCP 的三次握手和四次挥手，效率比较低。</li>
+<li>HTTP 1.0 <strong>不支持断点续传</strong>，也就是说，每次都会传送全部的页面和数据。</li>
+<li>HTTP 1.0 认为每台计算机只能绑定一个 IP，所以请求消息中的 URL 并<strong>没有传递主机名（hostna</strong>me）。</li>
+</ul>
+<p>HTTP1.1</p>
+<ul>
+<li>HTTP 1.1 使用了<strong>摘要算法</strong>来进行身份验证</li>
+<li>HTTP 1.1 默认<strong>使用长连接</strong>，长连接就是只需一次建立就可以传输多次数据，传输完成后，只需要一次切断连接即可。长连接的连接时长可以通过请求头中的 <code>keep-alive</code> 来设置</li>
+<li>HTTP 1.1 支<strong>持断点续传</strong>，通过使用请求头中的 <code>Range</code> 来实现。</li>
+</ul>
+<p>HTTP 2.0</p>
+<ul>
+<li><code>头部压缩</code>，由于 HTTP 1.1 经常会出现 <strong>User-Agent、Cookie、Accept、Server、Range</strong> 等字段可能会占用几百甚至几千字节，而 Body 却经常只有几十字节，所以导致头部偏重。HTTP 2.0 使用 <code>HPACK</code> 算法进行压缩。</li>
+<li><strong><code>二进制格式</code>，HTTP 2.0 使用了更加靠近 TCP/IP 的二进制格式，而抛弃了 ASCII 码，提升了解析效率</strong></li>
+<li><code>强化安全</code>，由于安全已经成为重中之重，所以 HTTP2.0 一般都跑在 HTTPS 上。</li>
+<li><strong><code>多路复用</code>，即每一个请求都是是用作连接共享。一个请求对应一个id，这样一个连接上可以有多个请求。</strong></li>
+</ul>
+<h2 id="3dns使用什么协议端口是什么">3.DNS使用什么协议，端口是什么？</h2>
+<p>DNS占用<strong>53号端口</strong>，同时使用TCP和UDP协议。那么DNS在什么情况下使用这两种协议？</p>
+<p>DNS在区域传输的时候使用TCP协议，其他时候使用UDP协议。</p>
+<p><strong>DNS区域传输的时候使用TCP协议</strong>：</p>
+<p>1.辅域名服务器会定时（一般3小时）向主域名服务器进行查询以便了解数据是否有变动。如有变动，会执行一次区域传送，进行数据同步。区域传送使用TCP而不是UDP，因为数据同步传送的数据量比一个请求应答的数据量要多得多。</p>
+<p>2.TCP是一种可靠连接，保证了数据的准确性。</p>
+<p><strong>域名解析时使用UDP协议：</strong></p>
+<p>客户端向DNS服务器查询域名，一般返回的内容都不超过512字节，用UDP传输即可。不用经过三次握手，这样DNS服务器负载更低，响应更快。理论上说，客户端也可以指定向DNS服务器查询时用TCP，但事实上，很多DNS服务器进行配置的时候，仅支持UDP查询包。</p>
+<p>（<strong>为什么使用UDP协议</strong>）：1.传输内容小，错误率底。2.对速度的要求 3.对DNS服务器负载低</p>
+<h2 id="4网关网桥路由器交换机的区别">4.网关，网桥，路由器，交换机的区别</h2>
+<p>1.网桥:连接两个LAN,并转发数据帧</p>
+<p>网桥也叫<strong>桥接器</strong>，是连接两个局域网的一种存储/转发设备，它能将一个大的LAN分割为多个网段，或将两个以上的LAN互联为一个逻辑LAN，使LAN上的所有用户都可访问服务器。</p>
+<p>网桥：工作在数据链路层，在不同或相同类型的LAN之间存储并转发数据帧，必要时进行链路层上的协议转换。可连接两个或多个网络，在其中传送信息包。</p>
+<p>在日常生活中，拓展局域网最常见的方法是使用网桥。最简单的网桥有两个端口，复杂些的网桥可以有更多的端口。网桥的每个端口与一个网段相连。</p>
+<p>2.网关：只要连接两个不同的网络的设备都可以叫网关</p>
+<p>3.交换机：工作在数据链路层，原理等同于多端口网桥。作用是连接数个相同网段的不同主机，减少网内冲突，隔离冲突域。利用存储转发和过滤技术来从物理上分割网段。</p>
+<p>4.路由器：是连接因特网中各局域网、广域网的设备，是用于连接多个逻辑上分开的网络，所谓逻辑网络是代表一个单独的网络或者一个子网。当数据从一个子网传输到另一个子网时，可通过路由器的路由功能来完成。因此，路由器具有判断网络地址和选择IP路径的功能，它能在多网络互联环境中，建立灵活的连接，可用完全不同的数据分组和介质访问方法连接各种子网，路由器只接受源站或其他路由器的信息，属网络层的一种互联设备。它会根据信道的情况自动选择和设定路由，以***路径，按前后顺序发送信号。</p>
+<h1 id="java-多线程">JAVA-多线程</h1>
+<h2 id="1终止线程的四种方式"><strong>1.终止线程的四种方式</strong></h2>
+<p>（1）正常执行结束</p>
+<p>（2）使用同一标志，多个线程共用一个变量，变量使用volite修饰，每次把他作为标志位来进行判断。</p>
+<p>（3）interrupt结束线程</p>
+<p>当线程处于阻塞状态的时候，如果使用sleep，同步锁的wait方法，socket的receive方法的时候，会使线程处于阻塞状态。</p>
+<p>当调用线程的interrupt方法的时候。会抛出interruptexception异常。阻塞中的那个方法抛出异常，通过代码捕获异常，然后结束执行。</p>
+<p>线程未处于阻塞状态的时候，可以使用isinterrupted来进行判断，while来调这个函数。</p>
+<p>（4）stop方法终止线程</p>
+<p>stop方法强制执行，会导致现场释放他所占有的所有锁、被保护的数据可能就会出现不一致性。可能会出现很多奇怪的应用程序错误。</p>
+<h2 id="2sleep和wait方法的区别"><strong>2.sleep和wait方法的区别</strong></h2>
+<p>1.对于sleep方法，属于Thread类，wait方法数据object类中。</p>
+<p>2.sleep方法导致线程的短暂执行，让出cpu去执行其他线程。依然监控cpu，当时间到了，立马拿到cpu的执行权。</p>
+<p>调用<strong>sleep方法的时候，线程不会释放锁</strong>。wait方法会放弃<strong>对象锁，进入锁的等待池</strong>。此方法调用了notify之后，才能进入锁池，进行重新竞争。</p>
+<p>（每个对象下会维护两个池：锁池与等待池，只有锁池中的线程才能进行锁的竞争，wait（）方法会把线程放进对象的等待池，notify方法会随机（基于jvm的实现）将等待池中的一个线程放进锁池）</p>
+<h2 id="3thread-和runnable的区别">3.Thread 和Runnable的区别</h2>
+<p>首先，<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200722135659977.png"
+        data-srcset="typore_pic/image-20200722135659977.png, typore_pic/image-20200722135659977.png 1.5x, typore_pic/image-20200722135659977.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200722135659977.png"
+        title="image-20200722135659977" /></p>
+<p>实质上都是继承runnable接口。</p>
+<p><strong>继承Thread类：</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200722135813032.png"
+        data-srcset="typore_pic/image-20200722135813032.png, typore_pic/image-20200722135813032.png 1.5x, typore_pic/image-20200722135813032.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200722135813032.png"
+        title="image-20200722135813032" /></p>
+<p>步骤：1.继承thread类，重写run方法。2.此时FIrstThread就是一个线程对象，直接新建FIrstThread对象，执行start方法即可。</p>
+<p><strong>实现Runnable接口：</strong></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200722140032373.png"
+        data-srcset="typore_pic/image-20200722140032373.png, typore_pic/image-20200722140032373.png 1.5x, typore_pic/image-20200722140032373.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200722140032373.png"
+        title="image-20200722140032373" /></p>
+<p>步骤：1.实现runnable接口，重写run方法。此时SecondThread就是一个runnable对象。2.新建一个Thread对象，在构造函数中传入SecondThread对象（runnable对象），再执行Thread对象的start方法即可。</p>
+<p><strong>两者区别</strong>：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200722140325496.png"
+        data-srcset="typore_pic/image-20200722140325496.png, typore_pic/image-20200722140325496.png 1.5x, typore_pic/image-20200722140325496.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200722140325496.png"
+        title="image-20200722140325496" /></p>
+<p>1.适合多个相同的程序代码的线程去处理同一个资源</p>
+<p>2.可以避免java中的单继承的限制</p>
+<p>3.增加程序的健壮性，代码可以被多个线程共享，代码和数据独立。</p>
+<p>4.线程池只能放入实现Runable或callable类线程，不能直接放入继承Thread的类</p>
+<h2 id="4synchronized-和-reentrantlock-的对比">4.Synchronized 和 ReenTrantLock 的对比</h2>
+<p><strong>① 两者都是可重入锁</strong></p>
+<p>两者都是可重入锁。“可重入锁”概念是：自己可以再次获取自己的内部锁。比如一个线程获得了某个对象的锁，此时这个对象锁还没有释放，当其再次想要获取这个对象的锁的时候还是可以获取的，如果不可锁重入的话，就会造成死锁。同一个线程每次获取锁，锁的计数器都自增1，所以要等到锁的计数器下降为0时才能释放锁。</p>
+<p><strong>② synchronized 依赖于 JVM 而 ReenTrantLock 依赖于 API</strong></p>
+<p>synchronized 是依赖于 JVM 实现的，前面我们也讲到了 虚拟机团队在 JDK1.6 为 synchronized 关键字进行了很多优化，但是这些优化都是在虚拟机层面实现的，并没有直接暴露给我们。ReenTrantLock 是 JDK 层面实现的（也就是 API 层面，需要 lock() 和 unlock 方法配合 try/finally 语句块来完成），所以我们可以通过查看它的源代码，来看它是如何实现的。</p>
+<p><strong>③ ReenTrantLock 比 synchronized 增加了一些高级功能</strong></p>
+<p>相比synchronized，ReenTrantLock增加了一些高级功能。主要来说主要有三点：<strong>①等待可中断；②可实现公平锁；③可实现选择性通知（锁可以绑定多个条件）</strong></p>
+<ul>
+<li><strong>ReenTrantLock提供了一种能够中断等待锁的线程的机制</strong>，通过lock.lockInterruptibly()来实现这个机制。也就是说正在等待的线程可以选择放弃等待，改为处理其他事情。</li>
+<li><strong>ReenTrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。</strong> ReenTrantLock默认情况是非公平的，可以通过 ReenTrantLock类的<code>ReentrantLock(boolean fair)</code>构造方法来制定是否是公平的。</li>
+<li>synchronized关键字与wait()和notify/notifyAll()方法相结合可以实现等待/通知机制，ReentrantLock类当然也可以实现，但是需要借助于Condition接口与newCondition() 方法。Condition是JDK1.5之后才有的，它具有很好的灵活性，比如可以实现多路通知功能也就是在一个Lock对象中可以创建多个Condition实例（即对象监视器），<strong>线程对象可以注册在指定的Condition中，从而可以有选择性的进行线程通知，在调度线程上更加灵活。 在使用notify/notifyAll()方法进行通知时，被通知的线程是由 JVM 选择的，用ReentrantLock类结合Condition实例可以实现“选择性通知”</strong> ，这个功能非常重要，而且是Condition接口默认提供的。而synchronized关键字就相当于整个Lock对象中只有一个Condition实例，所有的线程都注册在它一个身上。如果执行notifyAll()方法的话就会通知所有处于等待状态的线程这样会造成很大的效率问题，而Condition实例的signalAll()方法 只会唤醒注册在该Condition实例中的所有等待线程。</li>
+</ul>
+<p>如果你想使用上述功能，那么选择ReenTrantLock是一个不错的选择。</p>
+<p><strong>④ 性能已不是选择标准</strong></p>
+<p>在JDK1.6之前，synchronized 的性能是比 ReenTrantLock 差很多。具体表示为：synchronized 关键字吞吐量随线程数的增加，下降得非常严重。而ReenTrantLock 基本保持一个比较稳定的水平。我觉得这也侧面反映了， synchronized 关键字还有非常大的优化余地。后续的技术发展也证明了这一点，我们上面也讲了在 JDK1.6 之后 JVM 团队对 synchronized 关键字做了很多优化。<strong>JDK1.6 之后，synchronized 和 ReenTrantLock 的性能基本是持平了。所以网上那些说因为性能才选择 ReenTrantLock 的文章都是错的！JDK1.6之后，性能已经不是选择synchronized和ReenTrantLock的影响因素了！而且虚拟机在未来的性能改进中会更偏向于原生的synchronized，所以还是提倡在synchronized能满足你的需求的情况下，优先考虑使用synchronized关键字来进行同步！优化后的synchronized和ReenTrantLock一样，在很多地方都是用到了CAS操作</strong>。</p>
+<h2 id="5synchronized-关键字底层原理总结">5.synchronized 关键字底层原理总结</h2>
+<p><strong>synchronized 关键字底层原理属于 JVM 层面。</strong></p>
+<p><strong>① synchronized 同步语句块的情况</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class SynchronizedDemo {
+	public void method() {
+		synchronized (this) {
+			System.out.println(&#34;synchronized 代码块&#34;);
+		}
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>通过 JDK 自带的 javap 命令查看 SynchronizedDemo 类的相关字节码信息：首先切换到类的对应目录执行 <code>javac SynchronizedDemo.java</code> 命令生成编译后的 .class 文件，然后执行<code>javap -c -s -v -l SynchronizedDemo.class</code>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200722185338284.png"
+        data-srcset="typore_pic/image-20200722185338284.png, typore_pic/image-20200722185338284.png 1.5x, typore_pic/image-20200722185338284.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200722185338284.png"
+        title="image-20200722185338284" /></p>
+<p>从上面我们可以看出：</p>
+<p><strong>synchronized 同步语句块的实现使用的是 monitorenter 和 monitorexit 指令，其中 monitorenter 指令指向同步代码块的开始位置，monitorexit 指令则指明同步代码块的结束位置。</strong> 当执行 monitorenter 指令时，线程试图获取锁也就是获取 monitor(monitor对象存在于每个Java对象的对象头中，synchronized 锁便是通过这种方式获取锁的，也是为什么Java中任意对象可以作为锁的原因) 的持有权.当计数器为0则可以成功获取，获取后将锁计数器设为1也就是加1。相应的在执行 monitorexit 指令后，将锁计数器设为0，表明锁被释放。如果获取对象锁失败，那当前线程就要阻塞等待，直到锁被另外一个线程释放为止。</p>
+<p><strong>② synchronized 修饰方法的的情况</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">public class SynchronizedDemo2 {
+	public synchronized void method() {
+		System.out.println(&#34;synchronized 方法&#34;);
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200722185357448.png"
+        data-srcset="typore_pic/image-20200722185357448.png, typore_pic/image-20200722185357448.png 1.5x, typore_pic/image-20200722185357448.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200722185357448.png"
+        title="image-20200722185357448" /></p>
+<p>synchronized 修饰的方法并没有 monitorenter 指令和 monitorexit 指令，取得代之的确实是 ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法，JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。</p>
+<p>在 Java 早期版本中，synchronized 属于重量级锁，效率低下，因为监视器锁（monitor）是依赖于底层的操作系统的 Mutex Lock 来实现的，Java 的线程是映射到操作系统的原生线程之上的。如果要挂起或者唤醒一个线程，都需要操作系统帮忙完成，而操作系统实现线程之间的切换时需要从用户态转换到内核态，这个状态之间的转换需要相对比较长的时间，时间成本相对较高，这也是为什么早期的 synchronized 效率低的原因。庆幸的是在 Java 6 之后 Java 官方对从 JVM 层面对synchronized 较大优化，所以现在的 synchronized 锁效率也优化得很不错了。JDK1.6对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销。</p>
+<p><strong>JDK1.6 之后的底层优化</strong></p>
+<p>JDK1.6 对锁的实现引入了大量的优化，如偏向锁、轻量级锁、自旋锁、适应性自旋锁、锁消除、锁粗化等技术来减少锁操作的开销。</p>
+<p>锁主要存在四中状态，依次是：无锁状态、偏向锁状态、轻量级锁状态、重量级锁状态，他们会随着竞争的激烈而逐渐升级。注意锁可以升级不可降级，这种策略是为了提高获得锁和释放锁的效率。</p>
+<p><strong>①偏向锁</strong></p>
+<p><strong>引入偏向锁的目的和引入轻量级锁的目的很像，他们都是为了没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗。但是不同是：轻量级锁在无竞争的情况下使用 CAS 操作去代替使用互斥量。而偏向锁在无竞争的情况下会把整个同步都消除掉</strong>。</p>
+<p>偏向锁的“偏”就是偏心的偏，它的意思是会偏向于第一个获得它的线程，如果在接下来的执行中，该锁没有被其他线程获取，那么持有偏向锁的线程就不需要进行同步！关于偏向锁的原理可以查看《深入理解Java虚拟机：JVM高级特性与最佳实践》第二版的13章第三节锁优化。</p>
+<p>但是对于锁竞争比较激烈的场合，偏向锁就失效了，因为这样场合极有可能每次申请锁的线程都是不相同的，因此这种场合下不应该使用偏向锁，否则会得不偿失，需要注意的是，偏向锁失败后，并不会立即膨胀为重量级锁，而是先升级为轻量级锁。</p>
+<p><strong>② 轻量级锁</strong></p>
+<p>倘若偏向锁失败，虚拟机并不会立即升级为重量级锁，它还会尝试使用一种称为轻量级锁的优化手段(1.6之后加入的)。<strong>轻量级锁不是为了代替重量级锁，它的本意是在没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗，因为使用轻量级锁时，不需要申请互斥量。另外，轻量级锁的加锁和解锁都用到了CAS操作。</strong> 关于轻量级锁的加锁和解锁的原理可以查看《深入理解Java虚拟机：JVM高级特性与最佳实践》第二版的13章第三节锁优化。</p>
+<p><strong>轻量级锁能够提升程序同步性能的依据是“对于绝大部分锁，在整个同步周期内都是不存在竞争的”，这是一个经验数据。如果没有竞争，轻量级锁使用 CAS 操作避免了使用互斥操作的开销。但如果存在锁竞争，除了互斥量开销外，还会额外发生CAS操作，因此在有锁竞争的情况下，轻量级锁比传统的重量级锁更慢！如果锁竞争激烈，那么轻量级将很快膨胀为重量级锁！</strong></p>
+<p><strong>③ 自旋锁和自适应自旋</strong></p>
+<p>轻量级锁失败后，虚拟机为了避免线程真实地在操作系统层面挂起，还会进行一项称为自旋锁的优化手段。</p>
+<p>互斥同步对性能最大的影响就是阻塞的实现，因为挂起线程/恢复线程的操作都需要转入内核态中完成（用户态转换到内核态会耗费时间）。</p>
+<p><strong>一般线程持有锁的时间都不是太长，所以仅仅为了这一点时间去挂起线程/恢复线程是得不偿失的。</strong> 所以，虚拟机的开发团队就这样去考虑：“我们能不能让后面来的请求获取锁的线程等待一会而不被挂起呢？看看持有锁的线程是否很快就会释放锁”。<strong>为了让一个线程等待，我们只需要让线程执行一个忙循环（自旋），这项技术就叫做自旋</strong>。</p>
+<p>百度百科对自旋锁的解释：</p>
+<blockquote>
+<p>何谓自旋锁？它是为实现保护共享资源而提出一种锁机制。其实，自旋锁与互斥锁比较类似，它们都是为了解决对某项资源的互斥使用。无论是互斥锁，还是自旋锁，在任何时刻，最多只能有一个保持者，也就说，在任何时刻最多只能有一个执行单元获得锁。但是两者在调度机制上略有不同。对于互斥锁，如果资源已经被占用，资源申请者只能进入睡眠状态。但是自旋锁不会引起调用者睡眠，如果自旋锁已经被别的执行单元保持，调用者就一直循环在那里看是否该自旋锁的保持者已经释放了锁，&ldquo;自旋&quot;一词就是因此而得名。</p>
+</blockquote>
+<p>自旋锁在 JDK1.6 之前其实就已经引入了，不过是默认关闭的，需要通过<code>--XX:+UseSpinning</code>参数来开启。JDK1.6及1.6之后，就改为默认开启的了。需要注意的是：自旋等待不能完全替代阻塞，因为它还是要占用处理器时间。如果锁被占用的时间短，那么效果当然就很好了！反之，相反！自旋等待的时间必须要有限度。如果自旋超过了限定次数任然没有获得锁，就应该挂起线程。<strong>自旋次数的默认值是10次，用户可以修改<code>--XX:PreBlockSpin</code>来更改</strong>。</p>
+<p>另外,<strong>在 JDK1.6 中引入了自适应的自旋锁。自适应的自旋锁带来的改进就是：自旋的时间不在固定了，而是和前一次同一个锁上的自旋时间以及锁的拥有者的状态来决定，虚拟机变得越来越“聪明”了</strong>。</p>
+<p><strong>④ 锁消除</strong></p>
+<p>锁消除理解起来很简单，它指的就是虚拟机即使编译器在运行时，如果检测到那些共享数据不可能存在竞争，那么就执行锁消除。锁消除可以节省毫无意义的请求锁的时间。</p>
+<p><strong>⑤ 锁粗化</strong></p>
+<p>原则上，我们在编写代码的时候，总是推荐将同步块的作用范围限制得尽量小，——直在共享数据的实际作用域才进行同步，这样是为了使得需要同步的操作数量尽可能变小，如果存在锁竞争，那等待线程也能尽快拿到锁。</p>
+<p>大部分情况下，上面的原则都是没有问题的，但是如果一系列的连续操作都对同一个对象反复加锁和解锁，那么会带来很多不必要的性能消耗。</p>
+<h2 id="6并发编程的三个重要特性">6.并发编程的三个重要特性</h2>
+<ol>
+<li><strong>原子性</strong> : 一个的操作或者多次操作，要么所有的操作全部都得到执行并且不会收到任何因素的干扰而中断，要么所有的操作都执行，要么都不执行。<code>synchronized</code> 可以保证代码片段的原子性。</li>
+<li><strong>可见性</strong> ：当一个变量对共享变量进行了修改，那么另外的线程都是立即可以看到修改后的最新值。<code>volatile</code> 关键字可以保证共享变量的可见性。</li>
+<li><strong>有序性</strong> ：代码在执行的过程中的先后顺序，Java 在编译器以及运行期间的优化，代码的执行顺序未必就是编写代码时候的顺序。<code>volatile</code> 关键字可以禁止指令进行重排序优化。</li>
+</ol>
+<h2 id="7说说-synchronized-关键字和-volatile-关键字的区别">7.说说 synchronized 关键字和 volatile 关键字的区别</h2>
+<p><code>synchronized</code> 关键字和 <code>volatile</code> 关键字是两个互补的存在，而不是对立的存在：</p>
+<ul>
+<li><strong>volatile关键字</strong>是线程同步的<strong>轻量级实现</strong>，所以<strong>volatile性能肯定比synchronized关键字要好</strong>。但是<strong>volatile关键字只能用于变量而synchronized关键字可以修饰方法以及代码块</strong>。synchronized关键字在JavaSE1.6之后进行了主要包括为了减少获得锁和释放锁带来的性能消耗而引入的偏向锁和轻量级锁以及其它各种优化之后执行效率有了显著提升，<strong>实际开发中使用 synchronized 关键字的场景还是更多一些</strong>。</li>
+<li><strong>多线程访问volatile关键字不会发生阻塞，而synchronized关键字可能会发生阻塞</strong></li>
+<li><strong>volatile关键字能保证数据的可见性，但不能保证数据的原子性。synchronized关键字两者都能保证。</strong></li>
+<li><strong>volatile关键字主要用于解决变量在多个线程之间的可见性，而 synchronized关键字解决的是多个线程之间访问资源的同步性。</strong></li>
+</ul>
+<h1 id="java-jvm">JAVA-JVM</h1>
+<h2 id="1多态-动态绑定-静态绑定">1.多态 动态绑定 静态绑定</h2>
+<p><strong>静态绑定</strong></p>
+<p>Java中只有private、static和final修饰的方法以及构造方法是静态绑定。</p>
+<p>a、private方法的特点是不能被继承，也就是不存在调用其子类的对象，只能调用对象自身，因此private方法和定义该方法的类绑定在一起。</p>
+<p>b、static方法又称类方法，类方法属于类文件。它不依赖对象而存在，在调用的时候就已经知道是哪个类的，所以是类方法是属于静态绑定。</p>
+<p>c、final方法：final方法可以被继承，但是不能被重写，所以也就是说final方法是属于静态绑定的，因为调用的方法是一样的。</p>
+<p>总结：<strong>如果一个方法不可被继承或者继承后不可被覆盖，那么这个方法就采用的静态绑定。</strong></p>
+<p>所有私有方法、静态方法、构造器及初始化方法<clinit>都是采用静态绑定机制。在编译器阶段就已经指明了调用方法在常量池中的符号引用，JVM运行的时候只需要进行一次常量池解析即可。</p>
+<p><strong>动态绑定</strong></p>
+<p>在JVM加载类的同时，会在<strong>方法区</strong>中为这个类存放很多信息。其中就有一个数据结构叫<strong>方法表</strong>。它以数组的形式记录了当前类及其所有超类的可见方法字节码在内存中的直接地址 。下图是上面源代码中Father和Sun类在方法区中的方法表：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="typore_pic/image-20200721204806100.png"
+        data-srcset="typore_pic/image-20200721204806100.png, typore_pic/image-20200721204806100.png 1.5x, typore_pic/image-20200721204806100.png 2x"
+        data-sizes="auto"
+        alt="typore_pic/image-20200721204806100.png"
+        title="image-20200721204806100" /></p>
+<p>上图中的方法表有两个特点：(1) <strong>子类方法表中继承了父类的方法</strong>，比如Father extends Object。 (2) 相同的方法(相同的方法签名：方法名和参数列表)<strong>在所有类的方法表中的索引相同</strong>。比如Father方法表中的f1()和Son方法表中的f1()都位于各自方法表的第11项中。</p>
+<p><strong>绑定过程</strong>：</p>
+<p>类对象方法的调用必须在运行过程中采用动态绑定机制。</p>
+<p>1.首先，根据对象的**声明类型(对象引用的类型)**找到“合适”的方法。具体步骤如下：</p>
+<p>​      ① 如果能在声明类型中匹配到方法签名完全一样(参数类型一致)的方法，那么这个方法是最合适的。</p>
+<p>​      ② 在第①条不能满足的情况下，寻找可以“凑合”的方法。标准就是通过将参数类型进行自动转型之后再进行匹配。如果匹配到多个自动转型后的方法签名f(A)和f(B)，则用下面的标准来确定合适的方法：传递给f(A)方法的参数都可以传递给f(B)，则f(A)最合适。反之f(B)最合适 。</p>
+<p>​      ③ 如果仍然在声明类型中找不到“合适”的方法，则编译阶段就无法通过。</p>
+<p>2.然后，根据在<strong>堆中创建对象的实际类型</strong>找到对应的方法表，<strong>从中确定具体的方法在内存中的位置。</strong></p>
+<p>**归纳：**1.先找引用类型的方法表，确定方法的索引。2.再找堆中对象实际类型的方法表，根据索引，确定要调用的方法。</p>
+<p>比如：father x=new son(); x.aciton();</p>
+<p>绑定过程：1.先找类father的方法表，找出action（）方法的索引下标。</p>
+<p>​					2.再找son的方法表，由下标直接确定action（）方法的内存位置，调用之。</p>
+<h1 id="java-基础知识">JAVA-基础知识</h1>
+<h2 id="1简述内部类静态内部类匿名内部类的区别">1.简述内部类、静态内部类、匿名内部类的区别</h2>
+<p><strong>内部类：</strong></p>
+<p>成员内部类可访问外部类<strong>所有的方法和成员变量。</strong></p>
+<p><strong>不能有静态的方法和成员变量。</strong></p>
+<p><strong>静态内部类：</strong></p>
+<p><strong>只能访问外部类的静态成员变量与静态方法。</strong></p>
+<p>静态内部类的<strong>非静态成员</strong>可<strong>访问外部类的静态变量</strong>，而不可访问外部类的非静态变量。</p>
+<p><strong>匿名内部类：</strong></p>
+<p>没有类名，没有class关键字也没有extends和implements等关键字修饰。</p>
+<p><strong>类的定义和对象的实例化同时进行。</strong></p>
+<h2 id="2数组和链表的异同">2.数组和链表的异同</h2>
+<p>数组的特点：</p>
+<ul>
+<li>在内存中，数组是一块连续的区域。</li>
+<li>插入和删除数据效率低（插入数据时，这个位置后面的数据都要后移）</li>
+<li>适合随机访问。查询效率很高。因为数组是连续的，知道每一个数据的内存地址，可以直接找到给地址的数据(直接索引就能实现，不需要重头遍历)。</li>
+<li>不利于扩展，一开始数组定义的空间不够时要重新定义数组。</li>
+</ul>
+<p>链表的特点：</p>
+<ul>
+<li>在内存中，不要求连续。</li>
+<li>每一个数据都保存了下一个数据的内存地址(指针)，通过这个指针指向下一个数据。</li>
+<li>增加和删除数据很容易。 （增加一个数，不需要动后面的数据，直接改变指针指向就行）</li>
+<li>查找效率低，只能重头开始依次遍历寻找。</li>
+<li>不指定大小，扩展方便。链表大小不用定义，数据随意增删。</li>
+</ul>
+<hr>
+<p>面试问题：介绍一下数组与链表的优缺点与适用场合</p>
+<ul>
+<li>
+<p>数组：查找快，增删慢；链表：增删快，查找慢</p>
+<ul>
+<li>
+<p>4、按序号查找时，数组可以随机访问，时间复杂度为O(1)，而链表不支持随机访问，平均需要O(n)；</p>
+<p>5、按值查找时，若数组无序，数组和链表时间复杂度均为O(n)，但是当数组有序时，可以采用折半查找将时间复杂度降为O(logn)；</p>
+</li>
+</ul>
+</li>
+<li>
+<p>数组的内存在数组定义时分配，因此元素个数是固定的；链表结点的内存在程序执行时动态向系统申请，因此链表节点个数可按照需要动态增减；</p>
+</li>
+<li>
+<p>数组逻辑上相邻的元素在物理存储位置上也相邻，而链表不一定；</p>
+</li>
+<li>
+<p>数组中的元素顺序关系由元素由索引体现，链表中的结点顺序关系由指针来体现；</p>
+</li>
+<li>
+<p>数组大小固定，不能动态扩展；但是链表可以进行动态增删。</p>
+</li>
+<li>
+<p>存储空间上，链表由于带有指针域，存储密度不如数组大；</p>
+</li>
+<li>
+<p>空间分配方面，数组在静态存储分配情形下，存储元素数量受限制，动态存储分配情形下，虽然存储空间可以扩充，但需要移动大量元素，导致操作效率降低，而且如果内存中没有更大块连续存储空间将导致分配失败；链表存储的节点空间只在需要的时候申请分配，只要内存中有空间就可以分配，操作比较灵活高效；</p>
+</li>
+</ul>
+<p>数组应用场景： 1、注重存储密度； 2、经常做的运算是按序号访问数据元素； 3、数组更容易实现，任何高级语言都支持； 4、构建的线性表较稳定。</p>
+<p>链表应用场景： 1、对线性表的长度或者规模难以估计； 2、频繁做插入删除操作； 3、构建动态性比较强的线性表。</p>
+<h1 id="算法">算法</h1>
+<p><del>Lee code 746</del><a href="https://leetcode-cn.com/problems/min-cost-climbing-stairs/" target="_blank" rel="noopener noreffer">746. 使用最小花费爬楼梯</a></p>
+<p><del>z字型打印二叉树</del><a href="https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/" target="_blank" rel="noopener noreffer">剑指 Offer 32 - III. 从上到下打印二叉树 III</a></p>
+<p>leetcode67 <a href="https://leetcode-cn.com/problems/ba-zi-fu-chuan-zhuan-huan-cheng-zheng-shu-lcof/" target="_blank" rel="noopener noreffer">剑指 Offer 67. 把字符串转换成整数</a>todo</p>
+<p><del>leecode53</del><a href="https://leetcode-cn.com/problems/maximum-subarray/" target="_blank" rel="noopener noreffer">53. 最大子序和</a></p>
+<p><del>题目是：给定一个包含大写英文字母和数字的句子，找出这个句子所包含的最大的十六进制整数，返回这个整数的值。数据保证该整数在int表示范围内。</del>
+<del>样例：输入：012345BZ16 输出：1193051 说明：12345B对应的十进制为1193051</del></p>
+<h1 id="特定问题类">特定问题类</h1>
+<h2 id="1海量数据找东西">1.海量数据找东西</h2>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-03-05&nbsp;<a class="git-hash" href="https://github.com/dillonzq/LoveIt/commit/d97521cb32737a87e340bb7f9d36996e05d0a443" target="_blank" title="commit by cxk(cxk@cxkdeMac-Pro.local) d97521cb32737a87e340bb7f9d36996e05d0a443: rebuilding site 2022年 3月 5日 星期六 22时34分08秒 CST">
+                                    <i class="fas fa-hashtag fa-fw"></i>d97521c</a></span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://chenxiankong.github.io/lee/" data-title="Lee"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://chenxiankong.github.io/lee/"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="https://chenxiankong.github.io/lee/" data-title="Lee"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://chenxiankong.github.io/lee/" data-title="Lee"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://chenxiankong.github.io/lee/" data-title="Lee"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/mac%E5%88%9D%E5%A7%8B%E5%8C%96/" class="prev" rel="prev" title="Mac初始化"><i class="fas fa-angle-left fa-fw"></i>Mac初始化</a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">陈限空</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.37.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.2.0/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"86o2FjKzdSdhTpvjKwdqXQ9a-gzGzoHsz","appKey":"ThFHWxmCXqcbVAJXKIwS4Faq","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://leancloud.hugoloveit.com","visitor":true}},"search":{"algoliaAppID":"PASDMWALPK","algoliaIndex":"index.zh-cn","algoliaSearchKey":"b42948e51daaa93df92381c8e2ac0f93","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
